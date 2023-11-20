@@ -1,7 +1,11 @@
 package com.food1.whateat.presentation.roulette;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -10,14 +14,17 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 
 import com.bluehomestudio.luckywheel.WheelItem;
 import com.food1.whateat.MainActivity;
@@ -32,7 +39,8 @@ public class RouletteActivity extends AppCompatActivity {
     //private Sensor mAccelerometer;
     TextView randomTextView;
     SoundPool soundPool;
-    int soundPlay;
+    int soundPlay_start;
+    int soundPlay_end;
     List<WheelItem> wheelItems;//룰렛에 들어갈 음식칸
     //String point;
     //String LastPoint=new String();
@@ -41,14 +49,16 @@ public class RouletteActivity extends AppCompatActivity {
     private boolean isStopped = true;
     Dialog dilaog0;
     ImageButton start;
-
+    int streamId;
+    int streamId2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_roulette_main);
         soundPool = new SoundPool(1,AudioManager.STREAM_MUSIC,0);
-        soundPlay=soundPool.load(this, R.raw.wheel_wheel,0);
+        soundPlay_start=soundPool.load(this, R.raw.roll_dice_start,0);
+        soundPlay_end=soundPool.load(this, R.raw.roll_dice_end,0);
         sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
 
@@ -63,7 +73,13 @@ public class RouletteActivity extends AppCompatActivity {
         dilaog0 = new Dialog(RouletteActivity.this);       // Dialog 초기화
         dilaog0.requestWindowFeature(Window.FEATURE_NO_TITLE); // 타이틀 제거
         dilaog0.setContentView(R.layout.dialog02);
-
+        dilaog0.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                // 다이얼로그가 취소될 때의 로직
+                start.setBackgroundResource(R.drawable.start_btn);
+            }
+        });
 
         Intent it = getIntent();
         allMenu2 = it.getStringArrayListExtra("selectedFoodList");
@@ -74,22 +90,45 @@ public class RouletteActivity extends AppCompatActivity {
 
 
         final Handler handler = new Handler();
+        final int animationDuration = 120; // 애니메이션 지속 시간
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 if (!isStopped) {
+
+
                     int randomIndex = new Random().nextInt(allMenu2.size());
                     String randomMenu = allMenu2.get(randomIndex);
                     start.setBackgroundResource(R.drawable.action_btn);
-                    // UI 갱신은 메인 스레드에서 수행되어야 함
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             randomTextView.setText(randomMenu);
+                            randomTextView.setTranslationY(-randomTextView.getHeight());
+                            // 애니메이션으로 텍스트뷰의 위치를 위에서 아래로 이동
+                            float targetY = randomTextView.getHeight() * 1.5f;
+
+                            ObjectAnimator animation = ObjectAnimator.ofFloat(randomTextView, "translationY", targetY );
+                            animation.setDuration(animationDuration);
+                            animation.addListener(new Animator.AnimatorListener() {
+                                @Override
+                                public void onAnimationEnd(Animator animator) {
+                                    // 애니메이션 종료 후 위치 초기화
+
+                                    randomTextView.setTranslationY(0);
+                                }
+
+                                // 다른 AnimatorListener 메서드들...
+                                @Override public void onAnimationStart(Animator animator) {}
+                                @Override public void onAnimationCancel(Animator animator) {}
+                                @Override public void onAnimationRepeat(Animator animator) {}
+                            });
+
+                            animation.start();
                         }
                     });
                 }
-                handler.postDelayed(this, 10); // 0.1초마다 업데이트
+                handler.postDelayed(this, 120);
             }
         };
         handler.post(runnable);
@@ -99,60 +138,83 @@ public class RouletteActivity extends AppCompatActivity {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                streamId = soundPool.play(soundPlay_start, 1.0F, 1.0F,1, -1,0.7F); // 버튼누르면 무한으로 돌리는소리
                 if (!isStopped) {
-                    // 스톱 버튼을 누를 때 선택한 값을 확인하고 제거할지 확인
                     final String currentItem = randomTextView.getText().toString();
-                    isStopped = true;
+                    soundPool.stop(streamId);  //무한소리 끄기
+                    streamId2 = soundPool.play(soundPlay_end, 1.0F, 1.0F,1, 0,0.7F);  //마지막소리는 한번만
+                    ValueAnimator decelerateAnimator = ValueAnimator.ofFloat(0, 1);
+                    decelerateAnimator.setInterpolator(new DecelerateInterpolator(2f));
 
-                    // 사용자에게 확인 또는 취소를 선택하도록 다이얼로그를 표시
+                    decelerateAnimator.setDuration(2000);
 
 
-                    dilaog0.show(); // 다이얼로그 띄우기
-                    dilaog0.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                    TextView showView=dilaog0.findViewById(R.id.will_you_choice);
-                    Button noBtn = dilaog0.findViewById(R.id.noBtn);
-
-                    showView.setText(currentItem+"(으)로 결정하시겠습니까?");
-
-                    //아니오 버튼을 눌렀을때
-                    noBtn.setOnClickListener(new View.OnClickListener() {
+                    decelerateAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                         @Override
-                        public void onClick(View view) {
-
-                            if(allMenu2.size()==1)
-                                showToast(RouletteActivity.this,"더이상 지울수 없습니다.");
-
-                            else if (allMenu2.contains(currentItem)) //아이템이 존재한다면
-                            {
-                                //showToast(rouletteMain.this,"음식이 있습니다."+allMenu2.size());
-                                allMenu2.remove(currentItem);
-                            }
-                            isStopped = false;                   //룰렛을 정지
-                            dilaog0.dismiss();                   // 다이얼로그 닫기
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            // 여기서는 필요한 경우 애니메이션 상태를 업데이트합니다.
                         }
-                     });
-
-
-                    // 네 버튼을 눌렀을때
-                    dilaog0.findViewById(R.id.yesBtn).setOnClickListener(new View.OnClickListener() {
+                    });
+                    decelerateAnimator.addListener(new Animator.AnimatorListener() {
                         @Override
-                        public void onClick(View view) {
-                            // 원하는 기능 구현
+                        public void onAnimationStart(Animator animator) {
+                        }
 
-                            isStopped = true;                   //계속 돌림
-                            dilaog0.dismiss();                  // 다이얼로그 닫기
-                            money=currentItem;
+                        @Override
+                        public void onAnimationEnd(Animator animator) {
+                            isStopped = true;
+                            randomTextView.setText(currentItem);
+                            randomTextView.setTranslationY(0);
+                            Log.d("Debug", "TextView Visibility: " + randomTextView.getVisibility());
+                            Log.d("Debug", "TextView X: " + randomTextView.getTranslationX() + ", Y: " + randomTextView.getTranslationY());
+                            Log.d("Debug", "TextView Width: " + randomTextView.getWidth() + ", Height: " + randomTextView.getHeight());
+                            Log.d("Debug", "TextView Alpha: " + randomTextView.getAlpha());
+                            dilaog0.show();
+                            dilaog0.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                            TextView showView = dilaog0.findViewById(R.id.will_you_choice);
+                            Button noBtn = dilaog0.findViewById(R.id.noBtn);
 
-                            on_Click_sub(view); //결정되면 바로 이동하게 임시코드.
 
+
+                            showView.setText(currentItem + "(으)로 결정하시겠습니까?");
+
+                            noBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    if (allMenu2.size() == 1)
+                                        showToast(RouletteActivity.this, "더이상 지울수 없습니다.");
+                                    else if (allMenu2.contains(currentItem)) {
+                                        allMenu2.remove(currentItem);
+                                        streamId = soundPool.play(soundPlay_start, 1.0F, 1.0F,1, -1,0.7F); // 버튼누르면 무한으로 돌리는소리
+                                    }
+                                    isStopped = false;
+                                    dilaog0.dismiss();
+                                }
+                            });
+
+                            dilaog0.findViewById(R.id.yesBtn).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    isStopped = true;
+                                    dilaog0.dismiss();
+                                    money = currentItem;
+                                    on_Click_sub(view);
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animator) {
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator animator) {
                         }
                     });
 
+                    decelerateAnimator.start();
+                } else {
 
-                }
-
-
-                else {
                     isStopped = false;
                 }
             }
@@ -171,7 +233,6 @@ public class RouletteActivity extends AppCompatActivity {
     public void on_Click_sub(View v){
         if(money==null)
         {
-
             showToast(RouletteActivity.this,"메뉴를 결정하세요");
         }
 
@@ -189,13 +250,17 @@ public class RouletteActivity extends AppCompatActivity {
 
 
 
+
+
+
     @Override
     public void onBackPressed(){
+        soundPool.stop(streamId);
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra("Finish", "미정");
+            setResult(RESULT_OK, intent);
+            finish();
 
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("Finish", "미정");
-        setResult(RESULT_OK, intent);
-        finish();
     }//백스페이스로 돌아가면 intent에 아무값도 없어 오류가 나 공백을 넣음
 
 

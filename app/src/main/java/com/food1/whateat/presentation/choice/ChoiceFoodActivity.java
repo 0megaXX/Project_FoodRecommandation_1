@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 
@@ -35,7 +37,7 @@ public class ChoiceFoodActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choice);
-
+        //Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.left_to_right);
         LinearLayout layout = findViewById(R.id.layout);
 
         FoodDatabase foodDatabase = FoodDatabase.getInstance(this);
@@ -45,6 +47,7 @@ public class ChoiceFoodActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Category category = Categories.findByName(intent.getStringExtra("category"));
         DefaultFoodRepository defaultFoodRepository = FoodManager.getInstance().getDefaultFoodRepository();
+        assert category != null;
         foods = defaultFoodRepository.getFoodsByCategory(category);
         for (int i = 0; i < foods.size(); i++) {
             Food food = foods.get(i);
@@ -75,10 +78,18 @@ public class ChoiceFoodActivity extends AppCompatActivity {
             underlineParams.setMargins(0, 10, 0, 0);
             underline.setLayoutParams(underlineParams);
             underline.setBackgroundColor(Color.GRAY);
-            linearLayout.addView(underline);
 
+
+
+            Animation animation = AnimationUtils.loadAnimation(this, R.anim.bottom_to_top_create);
+            animation.setStartOffset(i * 70);
+
+            linearLayout.addView(underline);
             layout.addView(checkBox);
             layout.addView(linearLayout);
+
+            linearLayout.startAnimation(animation);
+            checkBox.startAnimation(animation);
         }
 
     }

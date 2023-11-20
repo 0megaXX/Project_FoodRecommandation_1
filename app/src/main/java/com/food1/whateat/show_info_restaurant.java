@@ -1,31 +1,23 @@
 package com.food1.whateat;
 
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
 
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.material.snackbar.Snackbar;
 
 public class show_info_restaurant extends AppCompatActivity {
     final String PACKAGE_NAME = "net.daum.android.map";
@@ -46,6 +38,7 @@ public class show_info_restaurant extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.change_layout_1,R.anim.none_layout);
         setContentView(R.layout.activity_show_info_restaurant);
         goto_kakaoMap = findViewById(R.id.goto_kakaomap);
         back_button = findViewById(R.id.back_button);
@@ -121,6 +114,8 @@ public class show_info_restaurant extends AppCompatActivity {
             w_view.goBack();
         }else{
             super.onBackPressed();
+            overridePendingTransition(R.anim.none_layout,R.anim.bottom_to_top_exit);
+
         }
     }
 

@@ -48,7 +48,7 @@ public class rouletteMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_roulette_main);
         soundPool = new SoundPool(1,AudioManager.STREAM_MUSIC,0);
-        soundPlay=soundPool.load(this,R.raw.wheel_wheel,0);
+        soundPlay=soundPool.load(this,R.raw.roll_dice_start,0);
         sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
 
