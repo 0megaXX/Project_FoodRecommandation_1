@@ -4,7 +4,7 @@ import androidx.room.Embedded;
 import androidx.room.Junction;
 import androidx.room.Relation;
 
-import com.food1.whateat.data.category.Category;
+import com.food1.whateat.data.category.CategoryVO;
 import com.food1.whateat.data.category.CategoryFoodCrossRef;
 
 import java.util.List;
@@ -17,9 +17,9 @@ public class FoodWithCategory {
             entityColumn = "category_id",
             associateBy = @Junction(CategoryFoodCrossRef.class)
     )
-    private final List<Category> categories;
+    private final List<CategoryVO> categories;
 
-    public FoodWithCategory(FoodVO foodVO, List<Category> categories) {
+    public FoodWithCategory(FoodVO foodVO, List<CategoryVO> categories) {
         this.foodVO = foodVO;
         this.categories = categories;
     }
@@ -28,7 +28,7 @@ public class FoodWithCategory {
         return foodVO;
     }
 
-    public List<Category> getCategories() {
+    public List<CategoryVO> getCategories() {
         return categories;
     }
 }

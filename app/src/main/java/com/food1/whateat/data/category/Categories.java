@@ -7,7 +7,7 @@ public class Categories {
     public static final Category JAPAN = new Category("일식");
     public static final Category WESTERN = new Category("양식");
     public static final Category FAST = new Category("패스트푸드");
-    public static final Category ASIA = new Category("아시안");
+    public static final Category ASIAN = new Category("아시안");
 
     public static Category findByName(String name) {
         if (name.equals("한식")) {
@@ -26,7 +26,7 @@ public class Categories {
             return FAST;
         }
         else if (name.equals("아시안")) {
-            return ASIA;
+            return ASIAN;
         }
         return null;
     }

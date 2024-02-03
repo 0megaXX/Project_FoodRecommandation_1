@@ -10,7 +10,7 @@ import java.util.List;
 
 public class CategoryWithFood {
     @Embedded
-    private final Category category;
+    private final CategoryVO categoryVO;
     @Relation(
             parentColumn = "category_id",
             entityColumn = "food_id",
@@ -18,13 +18,13 @@ public class CategoryWithFood {
     )
     private final List<FoodVO> foodVOS;
 
-    public CategoryWithFood(Category category, List<FoodVO> foodVOS) {
-        this.category = category;
+    public CategoryWithFood(CategoryVO categoryVO, List<FoodVO> foodVOS) {
+        this.categoryVO = categoryVO;
         this.foodVOS = foodVOS;
     }
 
-    public Category getCategory() {
-        return category;
+    public CategoryVO getCategory() {
+        return categoryVO;
     }
 
     public List<FoodVO> getFoods() {

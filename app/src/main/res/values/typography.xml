@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="header_sb16">
+        <item name="fontFamily">@font/nanumsquare_round_bold</item>
+        <item name="android:textSize">16dp</item>
+    </style>
+    <style name="header_eb24">
+        <item name="fontFamily">@font/nanumsquare_round_extrabold</item>
+        <item name="android:textSize">24dp</item>
+    </style>
+
+    <style name="navi_bar_m12">
+        <item name="fontFamily">@font/nanumsquare_round_regular</item>
+        <item name="android:textSize">12dp</item>
+    </style>
+    <style name="text_b20">
+        <item name="fontFamily">@font/nanumsquare_round_bold</item>
+        <item name="android:textSize">20dp</item>
+    </style>
+
+    <style name="text_r16">
+        <item name="fontFamily">@font/nanumsquare_round_regular</item>
+        <item name="android:textSize">16dp</item>
+    </style>
+
+    <style name="text_m16">
+        <item name="fontFamily">@font/nanumsquare_round_regular</item>
+        <item name="android:textSize">16dp</item>
+    </style>
+
+    <style name="text_m12">
+        <item name="fontFamily">@font/nanumsquare_round_regular</item>
+        <item name="android:textSize">12dp</item>
+    </style>
+
+</resources>

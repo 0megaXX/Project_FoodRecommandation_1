@@ -9,9 +9,12 @@ plugins {
 android {
     compileSdk 33
 
+    buildFeatures {
+        dataBinding true
+    }
     defaultConfig {
         applicationId "com.food1.whateat1"
-        minSdk 22
+        minSdk 26
         targetSdk 33
         versionCode 5
         versionName "1.5"
@@ -28,8 +31,8 @@ android {
 
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     namespace 'com.food1.whateat'
 }
@@ -59,8 +62,9 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.10.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
     implementation 'com.google.android.material:material:1.5.1'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     annotationProcessor 'androidx.room:room-compiler:2.5.2'
-
+    implementation 'com.github.prolificinteractive:material-calendarview:2.0.1'
 
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
 }

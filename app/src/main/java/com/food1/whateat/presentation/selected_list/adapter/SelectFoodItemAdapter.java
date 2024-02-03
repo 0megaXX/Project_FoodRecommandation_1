@@ -30,7 +30,7 @@ public class SelectFoodItemAdapter extends RecyclerView.Adapter<SelectFoodItemAd
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_selected_food, parent, false);
+                .inflate(R.layout.item_custom_food, parent, false);
         return new ViewHolder(view);
     }
 
@@ -60,8 +60,7 @@ public class SelectFoodItemAdapter extends RecyclerView.Adapter<SelectFoodItemAd
 
         public ViewHolder(@NonNull View view) {
             super(view);
-            checkBox = view.findViewById(R.id.checkbox_favorite);
-            textView = view.findViewById(R.id.textView);
+
         }
     }
 }

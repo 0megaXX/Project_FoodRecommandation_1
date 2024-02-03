@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/tb_roulette"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:elevation="0dp"
+        android:background="@drawable/rounded_toolbar_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="음식뽑기"
+        app:titleCentered="true"
+        app:titleTextAppearance="@style/header_eb24"
+        app:titleTextColor="@color/white"
+        />
+
+    <TextView
+        android:id="@+id/tv_roulette_choice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="뽑기 방식을 선택해주세요."
+        android:textAppearance="@style/text_b20"
+        android:textColor="@color/gray_700"
+        app:layout_constraintBottom_toTopOf="@+id/ll_roulette"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tb_roulette" />
+
+    <LinearLayout
+        android:id="@+id/ll_roulette"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="100dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/cl_roulette_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tb_roulette">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_roulette_general_btn"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:background="@drawable/bg_coners_stoke">
+
+            <TextView
+                android:id="@+id/tv_roulette_general"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="기본"
+                android:textAppearance="@style/text_b20"
+                android:textColor="@color/gray_700"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_roulette_microwave_btn"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_coners_stoke_gray">
+
+            <TextView
+                android:id="@+id/tv_roulette_microwave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="전자레인지"
+                android:textAppearance="@style/text_b20"
+                android:textColor="@color/gray_700"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_roulette_btn"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginHorizontal="60dp"
+        android:background="@drawable/white_rounded_coners"
+        android:backgroundTint="@color/secondary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_roulette">
+
+        <TextView
+            android:id="@+id/tv_roulette_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="음식 뽑기"
+            android:textAppearance="@style/text_b20"
+            android:textColor="@color/gray_100"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

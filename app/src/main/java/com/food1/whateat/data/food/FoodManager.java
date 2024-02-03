@@ -7,8 +7,11 @@ public class FoodManager {
 
     public static FoodManager INSTANCE;
     private final DefaultFoodRepository defaultFoodRepository = new DefaultFoodRepository();
-    private List<FoodVO> selectFoodVOS = new ArrayList<>();
-    private FoodVO selectedFoodVO = null;
+    private String selectedFood = null;
+
+    public FoodManager() {
+        FoodImages.values();
+    }
 
     public DefaultFoodRepository getDefaultFoodRepository() {
         return defaultFoodRepository;
@@ -19,5 +22,13 @@ public class FoodManager {
             INSTANCE = new FoodManager();
         }
         return INSTANCE;
+    }
+
+    public void setSelectedFood(String selectedFood) {
+        this.selectedFood = selectedFood;
+    }
+
+    public String getSelectedFood() {
+        return selectedFood;
     }
 }

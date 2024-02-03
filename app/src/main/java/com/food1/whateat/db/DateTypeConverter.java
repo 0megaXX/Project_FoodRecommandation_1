@@ -17,4 +17,5 @@ public class DateTypeConverter {
     public static String dateToTimestamp(LocalDateTime date) {
         return date == null ? null : date.toString();
     }
+
 }

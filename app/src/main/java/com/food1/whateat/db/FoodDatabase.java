@@ -9,18 +9,20 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.food1.whateat.data.cached.AppDAO;
+import com.food1.whateat.data.cached.AppData;
 import com.food1.whateat.data.calendar.FoodCalendar;
 import com.food1.whateat.data.calendar.FoodCalendarDAO;
-import com.food1.whateat.data.category.Category;
+import com.food1.whateat.data.category.CategoryVO;
 import com.food1.whateat.data.category.CategoryDAO;
 import com.food1.whateat.data.category.CategoryFoodCrossRef;
 import com.food1.whateat.data.food.FoodVO;
 import com.food1.whateat.data.food.FoodDAO;
 
-@Database(entities = {FoodVO.class, Category.class, CategoryFoodCrossRef.class,
-        FoodCalendar.class
+@Database(entities = {FoodVO.class, CategoryVO.class, CategoryFoodCrossRef.class,
+        FoodCalendar.class, AppData.class
 },
-        version = 1,
+        version = 2,
         exportSchema = false)
 @TypeConverters(value = {
         DateTypeConverter.class
@@ -45,6 +47,8 @@ public abstract class FoodDatabase extends RoomDatabase {
         }
         return INSTANCE;
     }
+
+    public abstract AppDAO appDAO();
     public abstract CategoryDAO categoryDAO();
     public abstract FoodDAO foodDAO();
     public abstract FoodCalendarDAO foodCalendarDAO();

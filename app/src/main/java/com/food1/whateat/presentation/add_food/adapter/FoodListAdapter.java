@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,14 +33,14 @@ public class FoodListAdapter extends RecyclerView.Adapter<FoodListAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_food_list_row, parent, false);
+                .inflate(R.layout.item_custom_food, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         FoodVO foodVO = foodVOS.get(position);
-        holder.textView.setText(foodVO.getName());
+        holder.tvCustomFood.setText(foodVO.getName());
 
         holder.btDelete.setOnClickListener(v -> {
             foodDAO.delete(foodVOS.get(holder.getAdapterPosition()));
@@ -55,14 +56,15 @@ public class FoodListAdapter extends RecyclerView.Adapter<FoodListAdapter.ViewHo
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView textView;
-        ImageView btEdit, btDelete;
+        CheckBox checkBox;
+        TextView tvCustomFood;
+        ImageView btDelete;
 
         public ViewHolder(@NonNull View view)
         {
             super(view);
-            textView = view.findViewById(R.id.text_view);
-            btEdit = view.findViewById(R.id.bt_edit);
+            checkBox = view.findViewById(R.id.checkbox_select);
+            tvCustomFood = view.findViewById(R.id.tv_custom_food);
             btDelete = view.findViewById(R.id.bt_delete);
         }
     }

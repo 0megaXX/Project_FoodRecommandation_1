@@ -18,7 +18,7 @@ public interface FoodDAO {
      * @param foodVO
      * @return 중복된 값이 존재하는 경우 -1 반환
      */
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(FoodVO foodVO);
     @Update
     void update(FoodVO foodVO);

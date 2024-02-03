@@ -1,6 +1,7 @@
 package com.food1.whateat.presentation.roulette;
 
 import android.animation.Animator;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Dialog;
@@ -24,12 +25,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
 
 import com.bluehomestudio.luckywheel.WheelItem;
 import com.food1.whateat.MainActivity;
 import com.food1.whateat.R;
+import com.food1.whateat.data.calendar.FoodCalendar;
+import com.food1.whateat.data.calendar.FoodCalendarDAO;
+import com.food1.whateat.data.food.FoodManager;
+import com.food1.whateat.db.FoodDatabase;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -45,7 +50,7 @@ public class RouletteActivity extends AppCompatActivity {
     //String point;
     //String LastPoint=new String();
     String money;
-    ArrayList <String> allMenu2=new ArrayList<>();//모든 음식 배열
+    ArrayList <String> allMenu2 = new ArrayList<>();//모든 음식 배열
     private boolean isStopped = true;
     Dialog dilaog0;
     ImageButton start;
@@ -55,7 +60,7 @@ public class RouletteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_roulette_main);
+        setContentView(R.layout.activity_roulette);
         soundPool = new SoundPool(1,AudioManager.STREAM_MUSIC,0);
         soundPlay_start=soundPool.load(this, R.raw.roll_dice_start,0);
         soundPlay_end=soundPool.load(this, R.raw.roll_dice_end,0);
@@ -67,7 +72,7 @@ public class RouletteActivity extends AppCompatActivity {
         randomTextView = findViewById(R.id.select_food_text);
 
 
-       // mAccelerometer = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        // mAccelerometer = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
 
         dilaog0 = new Dialog(RouletteActivity.this);       // Dialog 초기화
@@ -95,40 +100,38 @@ public class RouletteActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if (!isStopped) {
-
-
                     int randomIndex = new Random().nextInt(allMenu2.size());
                     String randomMenu = allMenu2.get(randomIndex);
-                    start.setBackgroundResource(R.drawable.action_btn);
+
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             randomTextView.setText(randomMenu);
-                            randomTextView.setTranslationY(-randomTextView.getHeight());
-                            // 애니메이션으로 텍스트뷰의 위치를 위에서 아래로 이동
-                            float targetY = randomTextView.getHeight() * 1.5f;
+                            start.setBackgroundResource(R.drawable.action_btn);
+                            // 회전 애니메이션
+                            ObjectAnimator rotateAnimator = ObjectAnimator.ofFloat(randomTextView, "rotationY", 0f, 360f);
+                            rotateAnimator.setDuration(animationDuration);
 
-                            ObjectAnimator animation = ObjectAnimator.ofFloat(randomTextView, "translationY", targetY );
-                            animation.setDuration(animationDuration);
-                            animation.addListener(new Animator.AnimatorListener() {
-                                @Override
-                                public void onAnimationEnd(Animator animator) {
-                                    // 애니메이션 종료 후 위치 초기화
+                            // 크기 축소 애니메이션 (화면으로부터 멀어짐)
+                            ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(randomTextView, "scaleX", 1f, 0.5f);
+                            ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(randomTextView, "scaleY", 1f, 0.5f);
+                            scaleDownX.setDuration(animationDuration);
+                            scaleDownY.setDuration(animationDuration);
 
-                                    randomTextView.setTranslationY(0);
-                                }
+                            // 크기 확대 애니메이션 (화면으로부터 가까워짐)
+                            ObjectAnimator scaleUpX = ObjectAnimator.ofFloat(randomTextView, "scaleX", 0.5f, 1f);
+                            ObjectAnimator scaleUpY = ObjectAnimator.ofFloat(randomTextView, "scaleY", 0.5f, 1f);
+                            scaleUpX.setDuration(animationDuration);
+                            scaleUpY.setDuration(animationDuration);
 
-                                // 다른 AnimatorListener 메서드들...
-                                @Override public void onAnimationStart(Animator animator) {}
-                                @Override public void onAnimationCancel(Animator animator) {}
-                                @Override public void onAnimationRepeat(Animator animator) {}
-                            });
-
-                            animation.start();
+                            // 애니메이션 재생성
+                            AnimatorSet animatorSet = new AnimatorSet();
+                            animatorSet.play(rotateAnimator).with(scaleDownX).with(scaleDownY).before(scaleUpX).before(scaleUpY);
+                            animatorSet.start();
                         }
                     });
                 }
-                handler.postDelayed(this, 120);
+                handler.postDelayed(this, 100);
             }
         };
         handler.post(runnable);
@@ -138,6 +141,7 @@ public class RouletteActivity extends AppCompatActivity {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 streamId = soundPool.play(soundPlay_start, 1.0F, 1.0F,1, -1,0.7F); // 버튼누르면 무한으로 돌리는소리
                 if (!isStopped) {
                     final String currentItem = randomTextView.getText().toString();
@@ -231,7 +235,7 @@ public class RouletteActivity extends AppCompatActivity {
 
 
     public void on_Click_sub(View v){
-        if(money==null)
+        if(money == null)
         {
             showToast(RouletteActivity.this,"메뉴를 결정하세요");
         }
@@ -240,6 +244,9 @@ public class RouletteActivity extends AppCompatActivity {
         else {
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra("Finish", money);
+
+            selectFood(money);
+
             setResult(RESULT_OK, intent);
             finish();
         }
@@ -247,7 +254,12 @@ public class RouletteActivity extends AppCompatActivity {
 
 
 
-
+    private void selectFood(String foodName) {
+        FoodManager.getInstance().setSelectedFood(foodName);
+        FoodDatabase foodDatabase = FoodDatabase.getInstance(this);
+        FoodCalendarDAO foodCalendarDAO = foodDatabase.foodCalendarDAO();
+        foodCalendarDAO.insert(new FoodCalendar(foodName, LocalDateTime.now()));
+    }
 
 
 
@@ -256,27 +268,32 @@ public class RouletteActivity extends AppCompatActivity {
     @Override
     public void onBackPressed(){
         soundPool.stop(streamId);
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra("Finish", "미정");
-            setResult(RESULT_OK, intent);
-            finish();
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("Finish", "미정");
+        setResult(RESULT_OK, intent);
+        finish();
 
     }//백스페이스로 돌아가면 intent에 아무값도 없어 오류가 나 공백을 넣음
 
 
-            private static Toast sToast;
-            public static void showToast(Context context, String message) {
-                if (sToast == null) {
-                    sToast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
-                } else {
-                    sToast.setText(message);
-                }
-                sToast.show();
-            }
-
-
-
+    private static Toast sToast;
+    public static void showToast(Context context, String message) {
+        if (sToast == null) {
+            sToast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+        } else {
+            sToast.setText(message);
+        }
+        sToast.show();
     }
+
+
+
+}
+
+
+
+
+
 
 
 

@@ -69,14 +69,21 @@ public class DefaultFoodRepository {
         addFood(Food.builder("제육볶음").addCategory(Categories.KOREA).build());
         addFood(Food.builder("육개장").addCategory(Categories.KOREA).build());
 
-        addFood(Food.builder("중국집").addCategory(Categories.CHINA).build());
-        addFood(Food.builder("마라").addCategory(Categories.CHINA).build());
+        addFood(Food.builder("짜장면").addCategory(Categories.CHINA).build());
+        addFood(Food.builder("마라탕").addCategory(Categories.CHINA).build());
         addFood(Food.builder("양꼬치").addCategory(Categories.CHINA).build());
+        addFood(Food.builder("양장피").addCategory(Categories.CHINA).build());
+        addFood(Food.builder("짬뽕").addCategory(Categories.CHINA).build());
+        addFood(Food.builder("볶음밥").addCategory(Categories.CHINA).build());
+        addFood(Food.builder("마파두부").addCategory(Categories.CHINA).build());
+        addFood(Food.builder("동파육").addCategory(Categories.CHINA).build());
+        addFood(Food.builder("깐풍기").addCategory(Categories.CHINA).build());
+        addFood(Food.builder("꿔바로우").addCategory(Categories.CHINA).build());
 
         addFood(Food.builder("회").addCategory(Categories.JAPAN).build());
         addFood(Food.builder("초밥").addCategory(Categories.JAPAN).build());
         addFood(Food.builder("덮밥").addCategory(Categories.JAPAN).build());
-        addFood(Food.builder("돈까스").addCategory(Categories.JAPAN).build());
+        addFood(Food.builder("돈카츠").addCategory(Categories.JAPAN).build());
         addFood(Food.builder("라멘").addCategory(Categories.JAPAN).build());
         addFood(Food.builder("소바").addCategory(Categories.JAPAN).build());
         addFood(Food.builder("우동").addCategory(Categories.JAPAN).build());
@@ -88,18 +95,28 @@ public class DefaultFoodRepository {
         addFood(Food.builder("필라프").addCategory(Categories.WESTERN).build());
         addFood(Food.builder("리조또").addCategory(Categories.WESTERN).build());
         addFood(Food.builder("샐러드").addCategory(Categories.WESTERN).build());
-        addFood(Food.builder("샌드위치").addCategory(Categories.WESTERN).build());
         addFood(Food.builder("토스트").addCategory(Categories.WESTERN).build());
+        addFood(Food.builder("비프스튜").addCategory(Categories.WESTERN).build());
+        addFood(Food.builder("라자냐").addCategory(Categories.WESTERN).build());
 
         addFood(Food.builder("치킨").addCategory(Categories.FAST).build());
         addFood(Food.builder("피자").addCategory(Categories.FAST).build());
-        addFood(Food.builder("버거").addCategory(Categories.FAST).build());
+        addFood(Food.builder("햄버거").addCategory(Categories.FAST).build());
+        addFood(Food.builder("샌드위치").addCategory(Categories.FAST).build());
+        addFood(Food.builder("핫도그").addCategory(Categories.FAST).build());
+        addFood(Food.builder("부리또").addCategory(Categories.FAST).build());
+        addFood(Food.builder("케밥").addCategory(Categories.FAST).build());
+        addFood(Food.builder("타코야끼").addCategory(Categories.FAST).build());
 
-        addFood(Food.builder("쌀국수").addCategory(Categories.ASIA).build());
-        addFood(Food.builder("팟타이").addCategory(Categories.ASIA).build());
-        addFood(Food.builder("나시고랭").addCategory(Categories.ASIA).build());
+        addFood(Food.builder("쌀국수").addCategory(Categories.ASIAN).build());
+        addFood(Food.builder("팟타이").addCategory(Categories.ASIAN).build());
+        addFood(Food.builder("나시고랭").addCategory(Categories.ASIAN).build());
+        addFood(Food.builder("똠얌꿍").addCategory(Categories.ASIAN).build());
+        addFood(Food.builder("월남쌈").addCategory(Categories.ASIAN).build());
+//        addFood(Food.builder("분 보 후에").addCategory(Categories.ASIA).build());
+        addFood(Food.builder("락사").addCategory(Categories.ASIAN).build());
+        addFood(Food.builder("솜땀").addCategory(Categories.ASIAN).build());
 
-        
         
     }
 }

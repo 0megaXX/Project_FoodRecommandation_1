@@ -23,14 +23,6 @@
             >
         </TextView>
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/baseline_delete_24"
-            />
-
-
     </LinearLayout>
 
 
@@ -41,7 +33,7 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/inform_btn"
         app:layout_constraintTop_toBottomOf="@+id/header_layout"
-        tools:listitem="@layout/item_selected_food" />
+        tools:listitem="@layout/item_custom_food" />
 
     <ImageButton
         android:id="@+id/inform_btn"

@@ -35,11 +35,9 @@ import android.widget.Toast;
 import com.food1.whateat.data.food.FoodDAO;
 import com.food1.whateat.data.food.FoodVO;
 import com.food1.whateat.db.FoodDatabase;
-import com.food1.whateat.presentation.calendar.CalendarActivity;
-import com.food1.whateat.presentation.add_food.AddFoodListActivity;
 import com.food1.whateat.presentation.choice.ChoiceFoodActivity;
-import com.food1.whateat.presentation.question.FoodQuestionActivity;
-import com.food1.whateat.presentation.roulette.RouletteActivity;
+import com.food1.whateat.presentation.main.MainActivity2;
+import com.food1.whateat.presentation.roulette.RouletteActivity2;
 import com.food1.whateat.presentation.selected_list.SelectedListActivity;
 import com.google.android.material.navigation.NavigationView;
 
@@ -147,8 +145,7 @@ public class MainActivity extends AppCompatActivity{
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                Intent intent = new Intent(MainActivity.this, CalendarActivity.class);
-                                startActivity(intent);
+
                             }
                         }, 250); //버벅여서 지연시간 추가
                         break;
@@ -157,7 +154,7 @@ public class MainActivity extends AppCompatActivity{
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                Intent intent = new Intent(MainActivity.this, FoodQuestionActivity.class);
+                                Intent intent = new Intent(MainActivity.this, MainActivity2.class);
                                 startActivity(intent);
                             }
                         }, 250); //버벅여서 지연시간 추가
@@ -521,8 +518,7 @@ public class MainActivity extends AppCompatActivity{
     };
 
     public void clickAddFoodActivity(View view) {
-        Intent intent = new Intent(getApplicationContext(), AddFoodListActivity.class);
-        startActivity(intent);
+
     }
 
     //안봐도됨
@@ -664,7 +660,7 @@ public class MainActivity extends AppCompatActivity{
 
     //룰렛이었던 페이지로 가는 함수
     public void goto_Roulette(View v){
-        Intent rouletteIntent = new Intent(this, RouletteActivity.class);
+        Intent rouletteIntent = new Intent(this, RouletteActivity2.class);
 
         FoodDAO foodDAO = foodDatabase.foodDAO();
         List<FoodVO> foodsBySelected = foodDAO.findFoodsBySelected();

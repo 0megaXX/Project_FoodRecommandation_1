@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/tb_calendar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:elevation="0dp"
+            android:background="@drawable/rounded_toolbar_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="음식 내역"
+            app:titleCentered="true"
+            app:titleTextAppearance="@style/header_eb24"
+            app:titleTextColor="@color/white"
+            />
+
+
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+            android:id="@+id/cv_calendar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tb_calendar"
+            app:mcv_selectionColor="@color/secondary"
+            app:mcv_calendarMode="month"
+            app:mcv_selectionMode="single"
+            app:mcv_showOtherDates="out_of_range"
+            app:mcv_tileSize="53dp"/>
+
+<!--            app:mcv_leftArrow="@mipmap/btn_later_bg"-->
+<!--            app:mcv_rightArrow="@mipmap/btn_next_bg"-->
+
+            />
+
+        <View
+            android:id="@+id/view_calendar_divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="1dp"
+            android:background="@color/gray_light"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cv_calendar" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_calendar_food"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_calendar_divider"
+            tools:listitem="@layout/item_calendar_food" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

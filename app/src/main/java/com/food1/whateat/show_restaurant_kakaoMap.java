@@ -690,17 +690,17 @@ public class show_restaurant_kakaoMap extends AppCompatActivity implements MapVi
                                 food_type(xppList.get_foodType[i]).equals("아시아음식")){
                             pMarker.setMarkerType(MapPOIItem.MarkerType.CustomImage);
                             if(food_type(xppList.get_foodType[i]).equals("한식")){
-                                pMarker.setCustomImageResourceId(R.drawable.korea_food_marker);
+                                pMarker.setCustomImageResourceId(R.drawable.foodcategory_1_32x32);
                             }else if(food_type(xppList.get_foodType[i]).equals("중식")){
-                                pMarker.setCustomImageResourceId(R.drawable.china_food_marker);
+                                pMarker.setCustomImageResourceId(R.drawable.foodcategory_2_32x32);
                             }else if(food_type(xppList.get_foodType[i]).equals("양식")){
-                                pMarker.setCustomImageResourceId(R.drawable.steak_food_marker);
+                                pMarker.setCustomImageResourceId(R.drawable.foodcategory_4_32x32);
                             }else if(food_type(xppList.get_foodType[i]).equals("일식")){
-                                pMarker.setCustomImageResourceId(R.drawable.japan_food_marker);
+                                pMarker.setCustomImageResourceId(R.drawable.foodcategory_3_32x32);
                             }else if(food_type(xppList.get_foodType[i]).equals("패스트푸드")){
-                                pMarker.setCustomImageResourceId(R.drawable.fast_food_marker);
+                                pMarker.setCustomImageResourceId(R.drawable.foodcategory_5_32x32);
                             }else if(food_type(xppList.get_foodType[i]).equals("아시아음식")){
-                                pMarker.setCustomImageResourceId(R.drawable.asian_food_marker);
+                                pMarker.setCustomImageResourceId(R.drawable.foodcategory_6_32x32);
                             }
                             pMarker.setCustomImageAutoscale(false);
                             pMarker.setCustomImageAnchor(0.5f,1.0f);

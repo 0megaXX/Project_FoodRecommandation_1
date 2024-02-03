@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/tb_add_custom_food"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:elevation="0dp"
+        android:background="@drawable/rounded_toolbar_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="음식추가"
+        app:titleCentered="true"
+        app:titleTextAppearance="@style/header_eb24"
+        app:titleTextColor="@color/white"
+        />
+
+    <LinearLayout
+        android:id="@+id/ll_custom_food"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:orientation="horizontal"
+        android:padding="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tb_add_custom_food">
+
+        <EditText
+            android:id="@+id/food_text"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="3"
+            android:fontFamily="@font/bmjua_ttf"
+            android:hint="음식을 입력해주세요."
+            android:importantForAutofill="no"
+            android:textSize="25sp" />
+
+        <ImageButton
+            android:id="@+id/add_food_btn"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@drawable/add_btn"
+            android:labelFor="@+id/eT1"
+            tools:ignore="SpeakableTextPresentCheck,ImageContrastCheck" />
+    </LinearLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_custom_food"
+        tools:listitem="@layout/item_custom_food" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

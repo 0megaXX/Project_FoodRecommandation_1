@@ -1,6 +1,7 @@
 package com.food1.whateat.data.food;
 
 import com.food1.whateat.data.category.Category;
+import com.food1.whateat.data.category.CategoryVO;
 
 import java.util.ArrayList;
 import java.util.List;

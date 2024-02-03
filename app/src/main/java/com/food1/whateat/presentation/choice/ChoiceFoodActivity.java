@@ -1,44 +1,47 @@
 package com.food1.whateat.presentation.choice;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
-import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.food1.whateat.R;
 import com.food1.whateat.data.category.Categories;
 import com.food1.whateat.data.category.Category;
+import com.food1.whateat.data.category.CategoryVO;
 import com.food1.whateat.data.food.DefaultFoodRepository;
 import com.food1.whateat.data.food.Food;
 import com.food1.whateat.data.food.FoodDAO;
 import com.food1.whateat.data.food.FoodManager;
 import com.food1.whateat.data.food.FoodVO;
 import com.food1.whateat.db.FoodDatabase;
+import com.food1.whateat.presentation.choice.adapter.ChoiceFoodAdapter;
+import com.google.android.material.appbar.MaterialToolbar;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class ChoiceFoodActivity extends AppCompatActivity {
 
-    private List<CheckBox> checkBoxList = new LinkedList<>();
-
-    private List<Food> foods;
+    ChoiceFoodAdapter choiceFoodAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choice);
-        //Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.left_to_right);
-        LinearLayout layout = findViewById(R.id.layout);
+
+        MaterialToolbar tbChoiceFood = findViewById(R.id.tb_choice_food);
+        tbChoiceFood.setNavigationOnClickListener(v -> {
+            Intent intent = new Intent();
+            setResult(RESULT_CANCELED, intent);
+            finish();
+        });
 
         FoodDatabase foodDatabase = FoodDatabase.getInstance(this);
         FoodDAO foodDAO = foodDatabase.foodDAO();
@@ -47,61 +50,38 @@ public class ChoiceFoodActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Category category = Categories.findByName(intent.getStringExtra("category"));
         DefaultFoodRepository defaultFoodRepository = FoodManager.getInstance().getDefaultFoodRepository();
-        assert category != null;
-        foods = defaultFoodRepository.getFoodsByCategory(category);
+        List<Food> foods = defaultFoodRepository.getFoodsByCategory(category);
+
+        RecyclerView recyclerView = findViewById(R.id.rv_choice_food);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        List<ChoiceFoodModel> models = new ArrayList<>();
         for (int i = 0; i < foods.size(); i++) {
             Food food = foods.get(i);
-            LinearLayout linearLayout = new LinearLayout(this);
-            linearLayout.setOrientation(LinearLayout.VERTICAL);
-
-            CheckBox checkBox = new CheckBox(this);
+            ChoiceFoodModel model = new ChoiceFoodModel(food);
             for (FoodVO foodVO : foodsBySelected) {
                 if (food.getName().equals(foodVO.getName())) {
-                    checkBox.setChecked(true);
+                    model.setSelected(true);
                 }
             }
-
-            checkBox.setPadding(40, 20, 0, 10);
-            checkBox.setId(i);
-            checkBox.setText(food.getName());
-            checkBox.setTextSize(50);
-            checkBox.setButtonTintList(ColorStateList.valueOf(Color.parseColor("#FF5722")));
-            checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-
-            });
-            checkBoxList.add(checkBox);
-            View underline = new View(this);
-            LinearLayout.LayoutParams underlineParams = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    2
-            );
-            underlineParams.setMargins(0, 10, 0, 0);
-            underline.setLayoutParams(underlineParams);
-            underline.setBackgroundColor(Color.GRAY);
-
-
-
-            Animation animation = AnimationUtils.loadAnimation(this, R.anim.bottom_to_top_create);
-            animation.setStartOffset(i * 70);
-
-            linearLayout.addView(underline);
-            layout.addView(checkBox);
-            layout.addView(linearLayout);
-
-            linearLayout.startAnimation(animation);
-            checkBox.startAnimation(animation);
+            models.add(model);
         }
+
+        choiceFoodAdapter = new ChoiceFoodAdapter(this, models);
+        recyclerView.setAdapter(choiceFoodAdapter);
 
     }
 
     public void on_Click_sub(View v){
         Intent intent = new Intent();
 
-        String[] selectedFoods = new String[checkBoxList.size()];
-        for (int i = 0; i < checkBoxList.size(); i++) {
-            CheckBox checkBox = checkBoxList.get(i);
-            Food food = foods.get(i);
-            if (checkBox.isChecked()) {
+        List<ChoiceFoodModel> models = choiceFoodAdapter.getModels();
+        int itemCount = choiceFoodAdapter.getItemCount();
+        String[] selectedFoods = new String[itemCount];
+        for (int i = 0; i < itemCount; i++) {
+            ChoiceFoodModel model = models.get(i);
+            Food food = model.getFood();
+            if (model.isSelected()) {
                 selectedFoods[i] = "T|" + food.getName();
             } else {
                 selectedFoods[i] = "F|" + food.getName();
@@ -115,7 +95,7 @@ public class ChoiceFoodActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent intent = new Intent();
-        setResult(RESULT_OK, intent);
+        setResult(RESULT_CANCELED, intent);
         finish();
     }
 }
